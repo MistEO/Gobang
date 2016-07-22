@@ -23,6 +23,11 @@ const Point Point::operator+(const Point& r) const
 	return Point(x + r.x, y + r.y);
 }
 
+const double Point::operator-(const Point& r) const
+{
+	return sqrt((x - r.x)*(x - r.x)+(y - r.y)*(y - r.y));
+}
+
 const Point & Point::operator+=(const Point & r)
 {
 	x += r.x; y += r.y;

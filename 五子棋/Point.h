@@ -10,6 +10,7 @@ public:
 	~Point();
 
 	const Point operator+(const Point& r) const;
+	const double operator-(const Point& r) const;
 
 	const Point& operator+=(const Point&r);
 
