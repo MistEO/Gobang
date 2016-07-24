@@ -35,35 +35,34 @@ void Table::undo()
 
 bool Table::check_win()
 {
-	for (int i = 0; i != 5; ++i) {
-		if (_check_group(_last_point + Point(0, -i), 0, 1)
-			|| _check_group(_last_point + Point(i, -i), -1, 1)
-			|| _check_group(_last_point + Point(i, 0), -1, 0)
-			|| _check_group(_last_point + Point(-i, -i), 1, 1))
-			return true;
-	}
-	return false;
+	if (_check_group(_last_point + Point(0, -4), 0, 1)
+		|| _check_group(_last_point + Point(4, -4), -1, 1)
+		|| _check_group(_last_point + Point(4, 0), -1, 0)
+		|| _check_group(_last_point + Point(-4, -4), 1, 1))
+		return true;
+	else
+		return false;
 }
 
 bool Table::_check_group(const Point & p, const int x_op, const int y_op)
 {
-	bool flag = false;
+	int count = 0;
 	int last_color = _table[_last_point.x][_last_point.y];
 	Point now_p = p;
 
-	for (int i = 0; i != 5; ++i, now_p += Point(x_op, y_op)) {
+	for (int i = 0; i != 9; ++i, now_p += Point(x_op, y_op)) {
 		if (now_p.x > TableSize - 1 || now_p.x < 0
 			|| now_p.y > TableSize - 1 || now_p.y < 0)
 			continue;
 		if (_table[now_p.x][now_p.y] == last_color) {
-			flag = true;
+			if (++count == 5)
+				return true;
 		}
 		else {
-			flag = false;
-			break;
+			count = 0;
 		}
 	}
-	return flag;
+	return false;
 }
 
 void Table::display(std::ostream & out) const
