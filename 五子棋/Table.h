@@ -18,8 +18,9 @@ public:
 	~Table();
 
 	bool play(const Point& p, const int who);
-	bool check_win();
+	void undo();
 
+	bool check_win();
 	void display(std::ostream& out = std::cout) const;
 
 	bool check_point(const Point& p) const;
@@ -29,6 +30,7 @@ public:
 private:
 	std::array<std::array<int, TableSize>, TableSize> _table;
 	Point _last_point;
+	Point _last_but_one_point;
 
 	bool _check_group(const Point&p, const int x_op, const int y_op);
 };

@@ -20,7 +20,7 @@ public:
 	AI(const Table& t);
 	~AI();
 
-	Point calc();
+	const Point calc();
 
 private:
 	const Table& _table;

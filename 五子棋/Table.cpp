@@ -21,52 +21,49 @@ bool Table::play(const Point& p, const int who)
 		return false;
 	}
 	_table[p.x][p.y] = who;
+	_last_but_one_point = _last_point;
 	_last_point = p;
 
 	return true;
 }
 
+void Table::undo()
+{
+	_table[_last_but_one_point.x][_last_but_one_point.y] = Empty;
+	_table[_last_point.x][_last_point.y] = Empty;
+}
+
 bool Table::check_win()
 {
-	if (_check_group(_last_point, 0, 1)
-		|| _check_group(_last_point, 1, 1)
-		|| _check_group(_last_point, 1, 0)
-		|| _check_group(_last_point, -1, 1)) {
-		return true;
+	for (int i = 0; i != 5; ++i) {
+		if (_check_group(_last_point + Point(0, -i), 0, 1)
+			|| _check_group(_last_point + Point(i, -i), -1, 1)
+			|| _check_group(_last_point + Point(i, 0), -1, 0)
+			|| _check_group(_last_point + Point(-i, -i), 1, 1))
+			return true;
 	}
 	return false;
 }
 
 bool Table::_check_group(const Point & p, const int x_op, const int y_op)
 {
-	int count = 0;
-	int last_color = _table[p.x][p.y];
-	Point now_point = p + Point(-4 * x_op, -4 * y_op);
-	for (int i = 0; i != 10; ++i) {
-		if (x_op == -1) {
-			if (now_point.x - 1 < 0 || now_point.y < 0
-				|| now_point.x > TableSize - 1
-				|| now_point.y + y_op > TableSize - 1) {
-				continue;
-			}
-		}
-		else if (now_point.x < 0 || now_point.y < 0
-			|| now_point.x + x_op > TableSize - 1
-			|| now_point.y + y_op > TableSize - 1) {
-			continue;
-		}
+	bool flag = false;
+	int last_color = _table[_last_point.x][_last_point.y];
+	Point now_p = p;
 
-		if (_table[now_point.x][now_point.y] == last_color) {
-			if (++count == 5) {
-				return true;
-			}
+	for (int i = 0; i != 5; ++i, now_p += Point(x_op, y_op)) {
+		if (now_p.x > TableSize - 1 || now_p.x < 0
+			|| now_p.y > TableSize - 1 || now_p.y < 0)
+			continue;
+		if (_table[now_p.x][now_p.y] == last_color) {
+			flag = true;
 		}
 		else {
-			count = 0;
+			flag = false;
+			break;
 		}
-		now_point += Point(x_op, y_op);
 	}
-	return false;
+	return flag;
 }
 
 void Table::display(std::ostream & out) const

@@ -9,10 +9,10 @@ public:
 
 	~Point();
 
-	const Point operator+(const Point& r) const;
-	const double operator-(const Point& r) const;
+	const Point operator+(const Point& r) const;	//计算位移
+	const double operator-(const Point& r) const;	//计算距离
 
-	const Point& operator+=(const Point&r);
+	const Point& operator+=(const Point&r);			//自增位移
 
 	const Point& operator=(const Point& r);
 

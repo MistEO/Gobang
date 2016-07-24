@@ -4,6 +4,8 @@
 #include "Table.h"
 #include "AI.h"
 
+constexpr int Debug = true;
+
 void win(const int who);
 
 int main(void)
@@ -12,10 +14,16 @@ int main(void)
 	AI ai(t);
 	t.display();
 	while (true)
-	{				
+	{
 		char x; int y;
 		std::cout << "Your choice: ";
 		std::cin >> x >> y;
+		if (Debug && x == 'Z') {
+			t.undo();
+			system("CLS");
+			t.display();
+			continue;
+		}
 		while (!t.check_point(Point(x, y))) {
 			std::cout << "Please try again: ";
 			std::cin >> x >> y;
@@ -39,7 +47,7 @@ int main(void)
 			win(Black);
 			return 0;
 		}
-		
+
 	}
 	return 0;
 }
@@ -52,5 +60,5 @@ void win(const int who)
 	else if (who == Black) {
 		std::cout << "AI Win!" << std::endl;
 	}
-	Sleep(3000);
+	Sleep(6000);
 }
